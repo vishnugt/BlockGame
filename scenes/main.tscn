@@ -1,0 +1,519 @@
+[gd_scene load_steps=10 format=3 uid="uid://c8main001"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="PackedScene" uid="uid://c8grid001" path="res://scenes/grid/game_grid.tscn" id="2_grid"]
+[ext_resource type="Script" path="res://scripts/ui/player_controls.gd" id="3_pctrl"]
+[ext_resource type="Script" path="res://scripts/ui/hud.gd" id="4_hud"]
+[ext_resource type="FontFile" path="res://assets/fonts/Pacifico.ttf" id="5_pacifico"]
+
+[sub_resource type="StyleBoxFlat" id="ProgressBg"]
+bg_color = Color(0.85, 0.85, 0.85, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="ProgressFill"]
+bg_color = Color(0.15, 0.15, 0.15, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="ProgressFillLow"]
+bg_color = Color(0.5, 0.15, 0.15, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="Environment" id="Env_1"]
+background_mode = 1
+background_color = Color(0.95, 0.95, 0.95, 1)
+ambient_light_source = 1
+ambient_light_color = Color(1.0, 1.0, 1.0, 1)
+ambient_light_energy = 0.3
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_main")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Env_1")
+
+[node name="IsometricCamera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 7, 8)
+projection = 1
+size = 8.0
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866, -0.354, 0.354, 0, 0.707, 0.707, -0.5, -0.612, 0.612, 5, 8, 5)
+light_color = Color(1, 1, 1, 1)
+light_energy = 1.2
+shadow_enabled = true
+
+[node name="GameGrid" parent="." instance=ExtResource("2_grid")]
+
+; ======== UI LAYER ========
+[node name="UI" type="CanvasLayer" parent="."]
+
+; ---- START SCREEN ----
+[node name="StartScreen" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Background" type="ColorRect" parent="UI/StartScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(1.0, 1.0, 1.0, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/StartScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -100.0
+offset_right = 200.0
+offset_bottom = 100.0
+alignment = 1
+
+[node name="Title" type="Label" parent="UI/StartScreen/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_pacifico")
+theme_override_font_sizes/font_size = 64
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Block Count"
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="UI/StartScreen/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 20)
+
+[node name="NamesRow" type="HBoxContainer" parent="UI/StartScreen/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="P1NameContainer" type="VBoxContainer" parent="UI/StartScreen/VBoxContainer/NamesRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(180, 0)
+
+[node name="P1Label" type="Label" parent="UI/StartScreen/VBoxContainer/NamesRow/P1NameContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Player 1"
+horizontal_alignment = 1
+
+[node name="P1NameInput" type="LineEdit" parent="UI/StartScreen/VBoxContainer/NamesRow/P1NameContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(180, 40)
+theme_override_font_sizes/font_size = 20
+placeholder_text = "Name"
+alignment = 1
+max_length = 12
+
+[node name="NameSpacer" type="Control" parent="UI/StartScreen/VBoxContainer/NamesRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(40, 0)
+
+[node name="P2NameContainer" type="VBoxContainer" parent="UI/StartScreen/VBoxContainer/NamesRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(180, 0)
+
+[node name="P2Label" type="Label" parent="UI/StartScreen/VBoxContainer/NamesRow/P2NameContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Player 2"
+horizontal_alignment = 1
+
+[node name="P2NameInput" type="LineEdit" parent="UI/StartScreen/VBoxContainer/NamesRow/P2NameContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(180, 40)
+theme_override_font_sizes/font_size = 20
+placeholder_text = "Name"
+alignment = 1
+max_length = 12
+
+[node name="Spacer2" type="Control" parent="UI/StartScreen/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 15)
+
+[node name="StartButton" type="Button" parent="UI/StartScreen/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(250, 60)
+theme_override_font_sizes/font_size = 28
+text = "START GAME"
+size_flags_horizontal = 4
+
+; ---- HUD ----
+[node name="HUD" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 60.0
+mouse_filter = 2
+
+[node name="HUDBackground" type="ColorRect" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(1, 1, 1, 0.85)
+
+[node name="ScoreBar" type="HBoxContainer" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("4_hud")
+
+[node name="P1Score" type="Label" parent="UI/HUD/ScoreBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "P1: 0"
+horizontal_alignment = 1
+
+[node name="RoundInfo" type="Label" parent="UI/HUD/ScoreBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Round 1 / 15"
+horizontal_alignment = 1
+
+[node name="P2Score" type="Label" parent="UI/HUD/ScoreBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "P2: 0"
+horizontal_alignment = 1
+
+[node name="TimerBar" type="ProgressBar" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 40.0
+offset_top = 52.0
+offset_right = -40.0
+offset_bottom = 66.0
+max_value = 100.0
+value = 100.0
+show_percentage = false
+theme_override_styles/background = SubResource("ProgressBg")
+theme_override_styles/fill = SubResource("ProgressFill")
+
+; ---- ANSWER PHASE ----
+[node name="AnswerPhase" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Background" type="ColorRect" parent="UI/AnswerPhase"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(1.0, 1.0, 1.0, 0.95)
+
+[node name="AnswerScoreBar" type="HBoxContainer" parent="UI/AnswerPhase"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 10.0
+offset_bottom = 50.0
+
+[node name="P1ScoreLabel" type="Label" parent="UI/AnswerPhase/AnswerScoreBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "P1: 0"
+horizontal_alignment = 1
+
+[node name="RoundLabel" type="Label" parent="UI/AnswerPhase/AnswerScoreBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Round 1 / 15"
+horizontal_alignment = 1
+
+[node name="P2ScoreLabel" type="Label" parent="UI/AnswerPhase/AnswerScoreBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "P2: 0"
+horizontal_alignment = 1
+
+[node name="AnswerTimerBar" type="ProgressBar" parent="UI/AnswerPhase"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 40.0
+offset_top = 52.0
+offset_right = -40.0
+offset_bottom = 66.0
+max_value = 100.0
+value = 100.0
+show_percentage = false
+theme_override_styles/background = SubResource("ProgressBg")
+theme_override_styles/fill = SubResource("ProgressFill")
+
+[node name="ColorPrompt" type="Label" parent="UI/AnswerPhase"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -300.0
+offset_top = 80.0
+offset_right = 300.0
+offset_bottom = 130.0
+theme_override_font_sizes/font_size = 28
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Count all blocks!"
+horizontal_alignment = 1
+
+[node name="PlayerContainer" type="HBoxContainer" parent="UI/AnswerPhase"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 120.0
+offset_bottom = -20.0
+
+; -- P1 Controls --
+[node name="P1Controls" type="VBoxContainer" parent="UI/AnswerPhase/PlayerContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+script = ExtResource("3_pctrl")
+player_id = 1
+player_label = "P1"
+
+[node name="PlayerLabel" type="Label" parent="UI/AnswerPhase/PlayerContainer/P1Controls"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "P1"
+horizontal_alignment = 1
+
+[node name="NumberDisplay" type="Label" parent="UI/AnswerPhase/PlayerContainer/P1Controls"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 72
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "0"
+horizontal_alignment = 1
+
+[node name="ButtonRow" type="HBoxContainer" parent="UI/AnswerPhase/PlayerContainer/P1Controls"]
+layout_mode = 2
+alignment = 1
+
+[node name="DecrementBtn" type="Button" parent="UI/AnswerPhase/PlayerContainer/P1Controls/ButtonRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(80, 60)
+theme_override_font_sizes/font_size = 32
+text = "- [A]"
+
+[node name="IncrementBtn" type="Button" parent="UI/AnswerPhase/PlayerContainer/P1Controls/ButtonRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(80, 60)
+theme_override_font_sizes/font_size = 32
+text = "+ [D]"
+
+[node name="LockInBtn" type="Button" parent="UI/AnswerPhase/PlayerContainer/P1Controls"]
+layout_mode = 2
+custom_minimum_size = Vector2(200, 60)
+theme_override_font_sizes/font_size = 24
+text = "LOCK IN [Space]"
+size_flags_horizontal = 4
+
+[node name="KeyHint" type="Label" parent="UI/AnswerPhase/PlayerContainer/P1Controls"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.4, 0.4, 0.4, 1)
+text = "Keys: A (-)  D (+)  Space (Lock)"
+horizontal_alignment = 1
+
+; -- Divider --
+[node name="Divider" type="VSeparator" parent="UI/AnswerPhase/PlayerContainer"]
+layout_mode = 2
+
+; -- P2 Controls --
+[node name="P2Controls" type="VBoxContainer" parent="UI/AnswerPhase/PlayerContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+script = ExtResource("3_pctrl")
+player_id = 2
+player_label = "P2"
+
+[node name="PlayerLabel" type="Label" parent="UI/AnswerPhase/PlayerContainer/P2Controls"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "P2"
+horizontal_alignment = 1
+
+[node name="NumberDisplay" type="Label" parent="UI/AnswerPhase/PlayerContainer/P2Controls"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 72
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "0"
+horizontal_alignment = 1
+
+[node name="ButtonRow" type="HBoxContainer" parent="UI/AnswerPhase/PlayerContainer/P2Controls"]
+layout_mode = 2
+alignment = 1
+
+[node name="DecrementBtn" type="Button" parent="UI/AnswerPhase/PlayerContainer/P2Controls/ButtonRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(80, 60)
+theme_override_font_sizes/font_size = 32
+text = "- [Left]"
+
+[node name="IncrementBtn" type="Button" parent="UI/AnswerPhase/PlayerContainer/P2Controls/ButtonRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(80, 60)
+theme_override_font_sizes/font_size = 32
+text = "+ [Right]"
+
+[node name="LockInBtn" type="Button" parent="UI/AnswerPhase/PlayerContainer/P2Controls"]
+layout_mode = 2
+custom_minimum_size = Vector2(200, 60)
+theme_override_font_sizes/font_size = 24
+text = "LOCK IN [Enter]"
+size_flags_horizontal = 4
+
+[node name="KeyHint" type="Label" parent="UI/AnswerPhase/PlayerContainer/P2Controls"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.4, 0.4, 0.4, 1)
+text = "Keys: Left (-)  Right (+)  Enter (Lock)"
+horizontal_alignment = 1
+
+; ---- RESULT OVERLAY ----
+[node name="ResultOverlay" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -80.0
+offset_right = 200.0
+offset_bottom = 80.0
+
+[node name="Background" type="ColorRect" parent="UI/ResultOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(1, 1, 1, 0.9)
+
+[node name="CorrectAnswer" type="Label" parent="UI/ResultOverlay"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = 20.0
+offset_right = 150.0
+offset_bottom = 60.0
+theme_override_font_sizes/font_size = 28
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Answer: 5"
+horizontal_alignment = 1
+
+[node name="RoundWinner" type="Label" parent="UI/ResultOverlay"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = 70.0
+offset_right = 150.0
+offset_bottom = 110.0
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "P1 wins the round!"
+horizontal_alignment = 1
+
+; ---- GAME OVER SCREEN ----
+[node name="GameOverScreen" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Background" type="ColorRect" parent="UI/GameOverScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(1.0, 1.0, 1.0, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/GameOverScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -120.0
+offset_right = 200.0
+offset_bottom = 120.0
+alignment = 1
+
+[node name="GameOverLabel" type="Label" parent="UI/GameOverScreen/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_pacifico")
+theme_override_font_sizes/font_size = 48
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Game Over"
+horizontal_alignment = 1
+
+[node name="WinnerLabel" type="Label" parent="UI/GameOverScreen/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "PLAYER 1 WINS!"
+horizontal_alignment = 1
+
+[node name="FinalScore" type="Label" parent="UI/GameOverScreen/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "P1: 8  -  P2: 5"
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="UI/GameOverScreen/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 20)
+
+[node name="PlayAgainButton" type="Button" parent="UI/GameOverScreen/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(250, 60)
+theme_override_font_sizes/font_size = 28
+text = "PLAY AGAIN"
+size_flags_horizontal = 4
+
+; ---- SIGNAL CONNECTIONS ----
+[connection signal="pressed" from="UI/StartScreen/VBoxContainer/StartButton" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="UI/GameOverScreen/VBoxContainer/PlayAgainButton" to="." method="_on_play_again_pressed"]
