@@ -2,6 +2,7 @@ class_name PlayerControls
 extends VBoxContainer
 
 signal locked_in(player_id: int, answer: int)
+signal number_changed(player_id: int, value: int)
 
 @export var player_id: int = 1
 @export var player_label: String = "P1"
@@ -11,6 +12,7 @@ var is_active: bool = false
 var has_won: bool = false
 var default_lock_text: String = "LOCK IN"
 var lock_cooldown: float = 0.0
+var is_opponent: bool = false  # read-only display in online mode
 
 @onready var label: Label = $PlayerLabel
 @onready var number_display: Label = $NumberDisplay
@@ -56,15 +58,29 @@ func _process(delta: float) -> void:
 
 func set_active(active: bool) -> void:
 	is_active = active
+	if is_opponent:
+		return
 	increment_btn.disabled = not active
 	decrement_btn.disabled = not active
 	lock_in_btn.disabled = not active
+
+# In online mode, opponent's panel shows their number but all buttons are hidden
+func set_opponent_mode(enabled: bool) -> void:
+	is_opponent = enabled
+	is_active = false
+	increment_btn.visible = not enabled
+	decrement_btn.visible = not enabled
+	lock_in_btn.visible = not enabled
 
 func reset() -> void:
 	current_number = 0
 	number_display.text = "0"
 	has_won = false
 	lock_cooldown = 0.0
+	is_opponent = false
+	increment_btn.visible = true
+	decrement_btn.visible = true
+	lock_in_btn.visible = true
 	lock_in_btn.text = default_lock_text
 	lock_in_btn.modulate = Color.WHITE
 
@@ -87,6 +103,7 @@ func _on_increment() -> void:
 		return
 	current_number += 1
 	number_display.text = str(current_number)
+	number_changed.emit(player_id, current_number)
 
 func _on_decrement() -> void:
 	if not is_active:
@@ -94,6 +111,7 @@ func _on_decrement() -> void:
 	if current_number > 0:
 		current_number -= 1
 		number_display.text = str(current_number)
+		number_changed.emit(player_id, current_number)
 
 func _on_lock_in() -> void:
 	if not is_active or lock_cooldown > 0.0:

@@ -14,6 +14,8 @@ var move_direction: float = 1.0
 var start_position: Vector3
 var move_range: float = 3.0
 
+var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+
 # Grid floor and lines
 var floor_mesh: MeshInstance3D
 var grid_line_nodes: Array = []
@@ -103,7 +105,7 @@ func clear_blocks() -> void:
 	_clear_grid_data()
 	total_block_count = 0
 
-func generate_layout(level: Dictionary) -> int:
+func generate_layout(level: Dictionary, seed: int = 0) -> int:
 	# Update grid size if changed
 	var new_size: int = level.get("grid_size", 4)
 	if new_size != grid_size:
@@ -112,7 +114,12 @@ func generate_layout(level: Dictionary) -> int:
 
 	clear_blocks()
 
-	var num_blocks = randi_range(level["min_blocks"], level["max_blocks"])
+	if seed != 0:
+		rng.seed = seed
+	else:
+		rng.randomize()
+
+	var num_blocks = rng.randi_range(level["min_blocks"], level["max_blocks"])
 	var max_height: int = level["max_height"]
 	var use_dominos: bool = level["use_dominos"]
 
@@ -120,7 +127,7 @@ func generate_layout(level: Dictionary) -> int:
 	var domino_cells: Dictionary = {}
 
 	if use_dominos:
-		var num_dominos = randi_range(1, mini(3, num_blocks / 4))
+		var num_dominos = rng.randi_range(1, mini(3, num_blocks / 4))
 		for i in range(num_dominos):
 			var placed = _try_place_domino(max_height, domino_cells)
 			if placed:
@@ -129,8 +136,8 @@ func generate_layout(level: Dictionary) -> int:
 	var attempts = 0
 	while blocks_placed < num_blocks and attempts < 200:
 		attempts += 1
-		var x = randi_range(0, grid_size - 1)
-		var z = randi_range(0, grid_size - 1)
+		var x = rng.randi_range(0, grid_size - 1)
+		var z = rng.randi_range(0, grid_size - 1)
 
 		if grid_data[x][z] >= max_height:
 			continue
@@ -154,9 +161,9 @@ func generate_layout(level: Dictionary) -> int:
 
 func _try_place_domino(max_height: int, domino_cells: Dictionary) -> bool:
 	for _attempt in range(50):
-		var x = randi_range(0, grid_size - 1)
-		var z = randi_range(0, grid_size - 1)
-		var dir = randi_range(0, 1)
+		var x = rng.randi_range(0, grid_size - 1)
+		var z = rng.randi_range(0, grid_size - 1)
+		var dir = rng.randi_range(0, 1)
 		var x2 = x + (1 if dir == 0 else 0)
 		var z2 = z + (0 if dir == 0 else 1)
 

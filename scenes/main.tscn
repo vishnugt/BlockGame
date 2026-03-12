@@ -93,24 +93,51 @@ horizontal_alignment = 1
 
 [node name="Spacer" type="Control" parent="UI/StartScreen/VBoxContainer"]
 layout_mode = 2
-custom_minimum_size = Vector2(0, 20)
+custom_minimum_size = Vector2(0, 32)
 
-[node name="NamesRow" type="HBoxContainer" parent="UI/StartScreen/VBoxContainer"]
+; ---- Page 1: Mode selection ----
+[node name="ModePanel" type="VBoxContainer" parent="UI/StartScreen/VBoxContainer"]
+layout_mode = 2
+
+[node name="LocalButton" type="Button" parent="UI/StartScreen/VBoxContainer/ModePanel"]
+layout_mode = 2
+custom_minimum_size = Vector2(280, 64)
+theme_override_font_sizes/font_size = 28
+text = "LOCAL"
+size_flags_horizontal = 4
+
+[node name="ModeSpacer" type="Control" parent="UI/StartScreen/VBoxContainer/ModePanel"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 12)
+
+[node name="OnlineButton" type="Button" parent="UI/StartScreen/VBoxContainer/ModePanel"]
+layout_mode = 2
+custom_minimum_size = Vector2(280, 64)
+theme_override_font_sizes/font_size = 28
+text = "ONLINE"
+size_flags_horizontal = 4
+
+; ---- Page 2a: Local — enter both names ----
+[node name="LocalPanel" type="VBoxContainer" parent="UI/StartScreen/VBoxContainer"]
+layout_mode = 2
+visible = false
+
+[node name="NamesRow" type="HBoxContainer" parent="UI/StartScreen/VBoxContainer/LocalPanel"]
 layout_mode = 2
 alignment = 1
 
-[node name="P1NameContainer" type="VBoxContainer" parent="UI/StartScreen/VBoxContainer/NamesRow"]
+[node name="P1NameContainer" type="VBoxContainer" parent="UI/StartScreen/VBoxContainer/LocalPanel/NamesRow"]
 layout_mode = 2
 custom_minimum_size = Vector2(180, 0)
 
-[node name="P1Label" type="Label" parent="UI/StartScreen/VBoxContainer/NamesRow/P1NameContainer"]
+[node name="P1Label" type="Label" parent="UI/StartScreen/VBoxContainer/LocalPanel/NamesRow/P1NameContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Player 1"
 horizontal_alignment = 1
 
-[node name="P1NameInput" type="LineEdit" parent="UI/StartScreen/VBoxContainer/NamesRow/P1NameContainer"]
+[node name="P1NameInput" type="LineEdit" parent="UI/StartScreen/VBoxContainer/LocalPanel/NamesRow/P1NameContainer"]
 layout_mode = 2
 custom_minimum_size = Vector2(180, 40)
 theme_override_font_sizes/font_size = 20
@@ -118,22 +145,22 @@ placeholder_text = "Name"
 alignment = 1
 max_length = 12
 
-[node name="NameSpacer" type="Control" parent="UI/StartScreen/VBoxContainer/NamesRow"]
+[node name="NameSpacer" type="Control" parent="UI/StartScreen/VBoxContainer/LocalPanel/NamesRow"]
 layout_mode = 2
 custom_minimum_size = Vector2(40, 0)
 
-[node name="P2NameContainer" type="VBoxContainer" parent="UI/StartScreen/VBoxContainer/NamesRow"]
+[node name="P2NameContainer" type="VBoxContainer" parent="UI/StartScreen/VBoxContainer/LocalPanel/NamesRow"]
 layout_mode = 2
 custom_minimum_size = Vector2(180, 0)
 
-[node name="P2Label" type="Label" parent="UI/StartScreen/VBoxContainer/NamesRow/P2NameContainer"]
+[node name="P2Label" type="Label" parent="UI/StartScreen/VBoxContainer/LocalPanel/NamesRow/P2NameContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Player 2"
 horizontal_alignment = 1
 
-[node name="P2NameInput" type="LineEdit" parent="UI/StartScreen/VBoxContainer/NamesRow/P2NameContainer"]
+[node name="P2NameInput" type="LineEdit" parent="UI/StartScreen/VBoxContainer/LocalPanel/NamesRow/P2NameContainer"]
 layout_mode = 2
 custom_minimum_size = Vector2(180, 40)
 theme_override_font_sizes/font_size = 20
@@ -141,15 +168,145 @@ placeholder_text = "Name"
 alignment = 1
 max_length = 12
 
-[node name="Spacer2" type="Control" parent="UI/StartScreen/VBoxContainer"]
+[node name="LocalSpacer" type="Control" parent="UI/StartScreen/VBoxContainer/LocalPanel"]
 layout_mode = 2
-custom_minimum_size = Vector2(0, 15)
+custom_minimum_size = Vector2(0, 16)
 
-[node name="StartButton" type="Button" parent="UI/StartScreen/VBoxContainer"]
+[node name="StartButton" type="Button" parent="UI/StartScreen/VBoxContainer/LocalPanel"]
 layout_mode = 2
 custom_minimum_size = Vector2(250, 60)
 theme_override_font_sizes/font_size = 28
-text = "START GAME"
+text = "START"
+size_flags_horizontal = 4
+
+[node name="LocalBackButton" type="Button" parent="UI/StartScreen/VBoxContainer/LocalPanel"]
+layout_mode = 2
+custom_minimum_size = Vector2(120, 36)
+theme_override_font_sizes/font_size = 16
+text = "← BACK"
+size_flags_horizontal = 4
+
+; ---- Page 2b: Online — name + create or join ----
+[node name="OnlinePanel" type="VBoxContainer" parent="UI/StartScreen/VBoxContainer"]
+layout_mode = 2
+visible = false
+
+[node name="OnlineNameInput" type="LineEdit" parent="UI/StartScreen/VBoxContainer/OnlinePanel"]
+layout_mode = 2
+custom_minimum_size = Vector2(300, 48)
+theme_override_font_sizes/font_size = 22
+placeholder_text = "Your name"
+alignment = 1
+max_length = 12
+
+[node name="OnlineSpacer" type="Control" parent="UI/StartScreen/VBoxContainer/OnlinePanel"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 16)
+
+[node name="HostButton" type="Button" parent="UI/StartScreen/VBoxContainer/OnlinePanel"]
+layout_mode = 2
+custom_minimum_size = Vector2(280, 60)
+theme_override_font_sizes/font_size = 24
+text = "CREATE ROOM"
+size_flags_horizontal = 4
+
+[node name="OnlineSpacer2" type="Control" parent="UI/StartScreen/VBoxContainer/OnlinePanel"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 10)
+
+[node name="JoinButton" type="Button" parent="UI/StartScreen/VBoxContainer/OnlinePanel"]
+layout_mode = 2
+custom_minimum_size = Vector2(280, 60)
+theme_override_font_sizes/font_size = 24
+text = "JOIN ROOM"
+size_flags_horizontal = 4
+
+[node name="StatusLabel" type="Label" parent="UI/StartScreen/VBoxContainer/OnlinePanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.3, 0.3, 0.3, 1)
+text = ""
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="OnlineBackButton" type="Button" parent="UI/StartScreen/VBoxContainer/OnlinePanel"]
+layout_mode = 2
+custom_minimum_size = Vector2(120, 36)
+theme_override_font_sizes/font_size = 16
+text = "← BACK"
+size_flags_horizontal = 4
+
+; ---- Page 3: Join — enter room code ----
+[node name="JoinPanel" type="VBoxContainer" parent="UI/StartScreen/VBoxContainer"]
+layout_mode = 2
+visible = false
+
+[node name="RoomCodeInput" type="LineEdit" parent="UI/StartScreen/VBoxContainer/JoinPanel"]
+layout_mode = 2
+custom_minimum_size = Vector2(300, 48)
+theme_override_font_sizes/font_size = 22
+placeholder_text = "Room code"
+alignment = 1
+max_length = 6
+
+[node name="JoinSpacer" type="Control" parent="UI/StartScreen/VBoxContainer/JoinPanel"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 16)
+
+[node name="JoinConfirmButton" type="Button" parent="UI/StartScreen/VBoxContainer/JoinPanel"]
+layout_mode = 2
+custom_minimum_size = Vector2(280, 60)
+theme_override_font_sizes/font_size = 24
+text = "JOIN"
+size_flags_horizontal = 4
+
+[node name="JoinStatusLabel" type="Label" parent="UI/StartScreen/VBoxContainer/JoinPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.3, 0.3, 0.3, 1)
+text = ""
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="JoinBackButton" type="Button" parent="UI/StartScreen/VBoxContainer/JoinPanel"]
+layout_mode = 2
+custom_minimum_size = Vector2(120, 36)
+theme_override_font_sizes/font_size = 16
+text = "← BACK"
+size_flags_horizontal = 4
+
+; ---- Waiting panel (after CREATE ROOM) ----
+[node name="WaitingPanel" type="VBoxContainer" parent="UI/StartScreen/VBoxContainer"]
+layout_mode = 2
+visible = false
+
+[node name="WaitingLabel" type="Label" parent="UI/StartScreen/VBoxContainer/WaitingPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Waiting for opponent..."
+horizontal_alignment = 1
+
+[node name="ShareLinkLabel" type="Label" parent="UI/StartScreen/VBoxContainer/WaitingPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.2, 0.2, 0.8, 1)
+text = ""
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="CopyLinkButton" type="Button" parent="UI/StartScreen/VBoxContainer/WaitingPanel"]
+layout_mode = 2
+custom_minimum_size = Vector2(200, 44)
+theme_override_font_sizes/font_size = 18
+text = "COPY LINK"
+size_flags_horizontal = 4
+
+[node name="CancelButton" type="Button" parent="UI/StartScreen/VBoxContainer/WaitingPanel"]
+layout_mode = 2
+custom_minimum_size = Vector2(120, 36)
+theme_override_font_sizes/font_size = 16
+text = "CANCEL"
 size_flags_horizontal = 4
 
 ; ---- HUD ----
@@ -515,5 +672,15 @@ text = "PLAY AGAIN"
 size_flags_horizontal = 4
 
 ; ---- SIGNAL CONNECTIONS ----
-[connection signal="pressed" from="UI/StartScreen/VBoxContainer/StartButton" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="UI/StartScreen/VBoxContainer/ModePanel/LocalButton" to="." method="_on_local_mode_pressed"]
+[connection signal="pressed" from="UI/StartScreen/VBoxContainer/ModePanel/OnlineButton" to="." method="_on_online_mode_pressed"]
+[connection signal="pressed" from="UI/StartScreen/VBoxContainer/LocalPanel/StartButton" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="UI/StartScreen/VBoxContainer/LocalPanel/LocalBackButton" to="." method="_on_back_to_mode_pressed"]
+[connection signal="pressed" from="UI/StartScreen/VBoxContainer/OnlinePanel/HostButton" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="UI/StartScreen/VBoxContainer/OnlinePanel/JoinButton" to="." method="_on_join_flow_pressed"]
+[connection signal="pressed" from="UI/StartScreen/VBoxContainer/OnlinePanel/OnlineBackButton" to="." method="_on_back_to_mode_pressed"]
+[connection signal="pressed" from="UI/StartScreen/VBoxContainer/JoinPanel/JoinConfirmButton" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="UI/StartScreen/VBoxContainer/JoinPanel/JoinBackButton" to="." method="_on_back_to_online_pressed"]
+[connection signal="pressed" from="UI/StartScreen/VBoxContainer/WaitingPanel/CopyLinkButton" to="." method="_on_copy_link_pressed"]
+[connection signal="pressed" from="UI/StartScreen/VBoxContainer/WaitingPanel/CancelButton" to="." method="_on_cancel_waiting_pressed"]
 [connection signal="pressed" from="UI/GameOverScreen/VBoxContainer/PlayAgainButton" to="." method="_on_play_again_pressed"]

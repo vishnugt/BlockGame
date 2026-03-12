@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  game1-server:
+    image: node:20-alpine
+    container_name: game1-server
+    working_dir: /app
+    command: sh -c "npm install --omit=dev && node index.js"
+    volumes:
+      - .:/app
+    environment:
+      - PORT=3001
+      - ALLOWED_ORIGIN=https://game1.gt.ms,http://localhost:8060,http://localhost:8080
+    restart: unless-stopped
+    networks:
+      - npm_network
+
+networks:
+  npm_network:
+    external: true

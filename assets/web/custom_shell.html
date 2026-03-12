@@ -141,6 +141,9 @@ body.portrait {
 
 		<script src="$GODOT_URL"></script>
 		<script>
+// Expose room ID from URL to Godot via JavaScriptBridge
+window.BLOCK_COUNT_ROOM = new URLSearchParams(window.location.search).get('room') || '';
+
 const GODOT_CONFIG = $GODOT_CONFIG;
 const GODOT_THREADS_ENABLED = $GODOT_THREADS_ENABLED;
 const engine = new Engine(GODOT_CONFIG);

@@ -55,6 +55,10 @@ p2_lock_in={
 ]
 }
 
+[autoload]
+
+NetworkManager="*res://scripts/network_manager.gd"
+
 [gui]
 
 theme/custom="res://assets/theme.tres"
