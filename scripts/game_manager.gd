@@ -9,7 +9,7 @@ var round_winner: int = -1  # -1 = none yet, 0 = both, 1 = p1, 2 = p2
 var p1_correct: bool = false
 var p2_correct: bool = false
 
-const TOTAL_ROUNDS = 15
+const TOTAL_ROUNDS = 8
 const ANSWER_TIME = 45.0
 
 func reset() -> void:

@@ -5,13 +5,17 @@ const RECONNECT_WINDOW_MS = 30 * 1000;
 
 const rooms = new Map();
 
+const FRUITS = [
+  'apple', 'mango', 'peach', 'grape', 'lemon', 'guava', 'melon',
+  'cherry', 'banana', 'papaya', 'lychee', 'coconut', 'orange',
+  'berry', 'kiwi', 'plum', 'lime', 'pear', 'fig', 'date',
+];
+
 function generateRoomId() {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  let id = '';
-  for (let i = 0; i < 6; i++) {
-    id += chars[Math.floor(Math.random() * chars.length)];
-  }
-  return id;
+  const a = FRUITS[Math.floor(Math.random() * FRUITS.length)];
+  let b;
+  do { b = FRUITS[Math.floor(Math.random() * FRUITS.length)]; } while (b === a);
+  return `${a}-${b}`;
 }
 
 function createRoom() {

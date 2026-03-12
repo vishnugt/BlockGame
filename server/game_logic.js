@@ -4,29 +4,21 @@ const { broadcast, sendToSlot, destroyRoom } = require('./room_manager');
 
 // Must match LevelConfig in Godot exactly (level_config.gd)
 const LEVELS = [
-  // Rounds 1-3: 4x4, few blocks, no movement
+  // Rounds 1-2: 4x4 (16 cells, max 8), no movement
   { grid_size: 4, min_blocks: 3,  max_blocks: 6,  max_height: 1, grid_speed: 0.0, view_time: 4.0, use_dominos: false },
-  { grid_size: 4, min_blocks: 4,  max_blocks: 7,  max_height: 1, grid_speed: 0.0, view_time: 4.0, use_dominos: false },
-  { grid_size: 4, min_blocks: 5,  max_blocks: 8,  max_height: 1, grid_speed: 0.0, view_time: 4.0, use_dominos: false },
-  // Rounds 4-5: 4x4, more blocks, slow movement
-  { grid_size: 4, min_blocks: 6,  max_blocks: 10, max_height: 1, grid_speed: 1.0, view_time: 4.0, use_dominos: false },
-  { grid_size: 4, min_blocks: 7,  max_blocks: 11, max_height: 1, grid_speed: 1.5, view_time: 4.0, use_dominos: false },
-  // Rounds 6-8: 5x5, medium movement
-  { grid_size: 5, min_blocks: 8,  max_blocks: 13, max_height: 1, grid_speed: 2.0, view_time: 4.0, use_dominos: false },
-  { grid_size: 5, min_blocks: 9,  max_blocks: 15, max_height: 1, grid_speed: 2.5, view_time: 4.0, use_dominos: false },
-  { grid_size: 5, min_blocks: 10, max_blocks: 16, max_height: 1, grid_speed: 3.0, view_time: 4.0, use_dominos: false },
-  // Rounds 9-11: 5x5, fast movement
-  { grid_size: 5, min_blocks: 12, max_blocks: 18, max_height: 1, grid_speed: 3.5, view_time: 4.0, use_dominos: false },
-  { grid_size: 5, min_blocks: 13, max_blocks: 19, max_height: 1, grid_speed: 4.0, view_time: 4.0, use_dominos: false },
-  { grid_size: 5, min_blocks: 14, max_blocks: 20, max_height: 1, grid_speed: 4.5, view_time: 4.0, use_dominos: false },
-  // Rounds 12-15: 5x5, very fast movement
-  { grid_size: 5, min_blocks: 15, max_blocks: 21, max_height: 1, grid_speed: 5.0, view_time: 4.0, use_dominos: false },
-  { grid_size: 5, min_blocks: 16, max_blocks: 22, max_height: 1, grid_speed: 5.5, view_time: 4.0, use_dominos: false },
-  { grid_size: 5, min_blocks: 17, max_blocks: 23, max_height: 1, grid_speed: 6.0, view_time: 4.0, use_dominos: false },
-  { grid_size: 5, min_blocks: 18, max_blocks: 25, max_height: 1, grid_speed: 7.0, view_time: 4.0, use_dominos: false },
+  { grid_size: 4, min_blocks: 4,  max_blocks: 8,  max_height: 1, grid_speed: 0.0, view_time: 4.0, use_dominos: false },
+  // Rounds 3-4: 4x4, slow movement
+  { grid_size: 4, min_blocks: 5,  max_blocks: 8,  max_height: 1, grid_speed: 1.0, view_time: 4.0, use_dominos: false },
+  { grid_size: 4, min_blocks: 6,  max_blocks: 8,  max_height: 1, grid_speed: 1.5, view_time: 4.0, use_dominos: false },
+  // Rounds 5-6: 5x5 (25 cells, max 12), medium movement
+  { grid_size: 5, min_blocks: 7,  max_blocks: 12, max_height: 1, grid_speed: 2.0, view_time: 4.0, use_dominos: false },
+  { grid_size: 5, min_blocks: 9,  max_blocks: 12, max_height: 1, grid_speed: 2.5, view_time: 4.0, use_dominos: false },
+  // Rounds 7-8: 6x6 (36 cells), fast movement
+  { grid_size: 6, min_blocks: 8,  max_blocks: 12, max_height: 1, grid_speed: 3.5, view_time: 4.0, use_dominos: false },
+  { grid_size: 6, min_blocks: 10, max_blocks: 15, max_height: 1, grid_speed: 4.5, view_time: 4.0, use_dominos: false },
 ];
 
-const TOTAL_ROUNDS = 15;
+const TOTAL_ROUNDS = 8;
 const ANSWER_TIME_MS = 45000;
 const RESULT_DISPLAY_MS = 2500;
 
@@ -108,7 +100,7 @@ function startGame(room) {
     p1_name: p1.name,
     p2_name: p2.name,
   });
-  setTimeout(() => startRound(room), 500);
+  setTimeout(() => startRound(room), 1000);
 }
 
 function startRound(room) {

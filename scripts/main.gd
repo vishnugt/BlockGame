@@ -48,6 +48,7 @@ var input_cooldown: float = 0.0
 @onready var join_panel: Control = $UI/StartScreen/VBoxContainer/JoinPanel
 @onready var waiting_panel: Control = $UI/StartScreen/VBoxContainer/WaitingPanel
 @onready var online_name_input: LineEdit = $UI/StartScreen/VBoxContainer/OnlinePanel/OnlineNameInput
+@onready var join_name_input: LineEdit = $UI/StartScreen/VBoxContainer/JoinPanel/JoinNameInput
 @onready var room_code_input: LineEdit = $UI/StartScreen/VBoxContainer/JoinPanel/RoomCodeInput
 @onready var share_link_label: Label = $UI/StartScreen/VBoxContainer/WaitingPanel/ShareLinkLabel
 @onready var connection_status_label: Label = $UI/StartScreen/VBoxContainer/OnlinePanel/StatusLabel
@@ -100,7 +101,7 @@ func _check_url_room() -> void:
 	var room = JavaScriptBridge.eval("window.BLOCK_COUNT_ROOM || ''")
 	if room != null and str(room).length() > 0:
 		# Pre-fill room code and go straight to join panel
-		room_code_input.text = str(room).to_upper()
+		room_code_input.text = str(room).to_lower()
 		_show_join_panel()
 
 func _process(delta: float) -> void:
@@ -255,9 +256,9 @@ func _on_room_created(_result: int, response_code: int, _headers: PackedStringAr
 	# Show waiting panel with shareable link
 	online_panel.visible = false
 	waiting_panel.visible = true
-	var base_url = "https://game1.gt.ms"
-	if OS.get_name() != "Web":
-		base_url = "http://localhost:8060"
+	var base_url = "http://localhost:8060"
+	if OS.get_name() == "Web":
+		base_url = JavaScriptBridge.eval("window.location.origin")
 	share_link_label.text = "%s?room=%s" % [base_url, room_id]
 
 	network_mode = NetworkMode.ONLINE
@@ -266,11 +267,11 @@ func _on_room_created(_result: int, response_code: int, _headers: PackedStringAr
 # --- Online multiplayer: Join ---
 
 func _on_join_pressed() -> void:
-	var room_code = room_code_input.text.strip_edges().to_upper()
-	if room_code.length() != 6:
-		join_status_label.text = "Enter a 6-character room code."
+	var room_code = room_code_input.text.strip_edges().to_lower()
+	if room_code.length() < 3 or not "-" in room_code:
+		join_status_label.text = "Enter a room code (e.g. apple-mango)."
 		return
-	var player_name = online_name_input.text.strip_edges()
+	var player_name = join_name_input.text.strip_edges()
 	if player_name == "":
 		player_name = "Player"
 	join_status_label.text = "Connecting..."
@@ -281,7 +282,10 @@ func _on_join_pressed() -> void:
 
 func _on_network_connected(slot: int, room_id: String) -> void:
 	my_slot = slot
-	connection_status_label.text = "Connected (slot %d). Waiting for opponent..." % slot
+	if join_panel.visible:
+		join_status_label.text = "Connected! Waiting for game to start..."
+	else:
+		connection_status_label.text = "Connected. Waiting for opponent..."
 
 func _on_network_failed(reason: String) -> void:
 	network_mode = NetworkMode.LOCAL
@@ -447,14 +451,18 @@ func _start_answering() -> void:
 		p1_controls.set_active(true)
 		p2_controls.set_active(true)
 	else:
-		# Only enable the local player's controls; opponent panel is read-only
+		# Active player gets full controls; opponent panel shows number only (no buttons)
 		p1_controls.reset()
 		p2_controls.reset()
 		if my_slot == 1:
+			p1_controls.online_mode = true
 			p1_controls.set_active(true)
+			p1_controls.set_online_button_labels()
 			p2_controls.set_opponent_mode(true)
 		else:
+			p2_controls.online_mode = true
 			p2_controls.set_active(true)
+			p2_controls.set_online_button_labels()
 			p1_controls.set_opponent_mode(true)
 
 	block_prompt.text = "How many blocks?"

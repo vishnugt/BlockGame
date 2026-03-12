@@ -10,7 +10,7 @@ services:
       - .:/app
     environment:
       - PORT=3001
-      - ALLOWED_ORIGIN=https://game1.gt.ms,http://localhost:8060,http://localhost:8080
+      - ALLOWED_ORIGIN=https://game1.gt.ms,https://block.gt.ms,http://localhost:8060,http://localhost:8080
     restart: unless-stopped
     networks:
       - npm_network

@@ -44,7 +44,7 @@ const server = http.createServer((req, res) => {
   }
 
   if (req.method === 'GET' && url.pathname.startsWith('/room/')) {
-    const id = url.pathname.slice(6).toUpperCase();
+    const id = url.pathname.slice(6).toLowerCase();
     const room = getRoom(id);
     if (!room) {
       res.writeHead(404, { 'Content-Type': 'application/json' });
@@ -67,7 +67,7 @@ const wss = new WebSocketServer({ server, path: '/ws' });
 
 wss.on('connection', (ws, req) => {
   const url = new URL(req.url, 'http://localhost');
-  const roomId = (url.searchParams.get('room') || '').toUpperCase();
+  const roomId = (url.searchParams.get('room') || '').toLowerCase();
   const playerName = decodeURIComponent(url.searchParams.get('name') || 'Player').slice(0, 20);
 
   // Validate origin

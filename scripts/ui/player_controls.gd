@@ -13,6 +13,7 @@ var has_won: bool = false
 var default_lock_text: String = "LOCK IN"
 var lock_cooldown: float = 0.0
 var is_opponent: bool = false  # read-only display in online mode
+var online_mode: bool = false  # accept both key sets when true
 
 @onready var label: Label = $PlayerLabel
 @onready var number_display: Label = $NumberDisplay
@@ -41,7 +42,15 @@ func _process(delta: float) -> void:
 
 	if not is_active:
 		return
-	if player_id == 1:
+	if online_mode:
+		# Accept both key sets — player is alone on their device
+		if Input.is_action_just_pressed("p1_increment") or Input.is_action_just_pressed("p2_increment"):
+			_on_increment()
+		elif Input.is_action_just_pressed("p1_decrement") or Input.is_action_just_pressed("p2_decrement"):
+			_on_decrement()
+		elif Input.is_action_just_pressed("p1_lock_in") or Input.is_action_just_pressed("p2_lock_in"):
+			_on_lock_in()
+	elif player_id == 1:
 		if Input.is_action_just_pressed("p1_increment"):
 			_on_increment()
 		elif Input.is_action_just_pressed("p1_decrement"):
@@ -65,6 +74,11 @@ func set_active(active: bool) -> void:
 	lock_in_btn.disabled = not active
 
 # In online mode, opponent's panel shows their number but all buttons are hidden
+func set_online_button_labels() -> void:
+	decrement_btn.text = "- [A/Left]"
+	increment_btn.text = "+ [D/Right]"
+	lock_in_btn.text = "LOCK IN [Space/Enter]"
+
 func set_opponent_mode(enabled: bool) -> void:
 	is_opponent = enabled
 	is_active = false
@@ -78,6 +92,7 @@ func reset() -> void:
 	has_won = false
 	lock_cooldown = 0.0
 	is_opponent = false
+	online_mode = false
 	increment_btn.visible = true
 	decrement_btn.visible = true
 	lock_in_btn.visible = true

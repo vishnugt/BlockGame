@@ -183,7 +183,7 @@ size_flags_horizontal = 4
 layout_mode = 2
 custom_minimum_size = Vector2(120, 36)
 theme_override_font_sizes/font_size = 16
-text = "← BACK"
+text = "< BACK"
 size_flags_horizontal = 4
 
 ; ---- Page 2b: Online — name + create or join ----
@@ -233,21 +233,29 @@ autowrap_mode = 3
 layout_mode = 2
 custom_minimum_size = Vector2(120, 36)
 theme_override_font_sizes/font_size = 16
-text = "← BACK"
+text = "< BACK"
 size_flags_horizontal = 4
 
-; ---- Page 3: Join — enter room code ----
+; ---- Page 3: Join — enter name + room code ----
 [node name="JoinPanel" type="VBoxContainer" parent="UI/StartScreen/VBoxContainer"]
 layout_mode = 2
 visible = false
+
+[node name="JoinNameInput" type="LineEdit" parent="UI/StartScreen/VBoxContainer/JoinPanel"]
+layout_mode = 2
+custom_minimum_size = Vector2(300, 48)
+theme_override_font_sizes/font_size = 22
+placeholder_text = "Your name"
+alignment = 1
+max_length = 12
 
 [node name="RoomCodeInput" type="LineEdit" parent="UI/StartScreen/VBoxContainer/JoinPanel"]
 layout_mode = 2
 custom_minimum_size = Vector2(300, 48)
 theme_override_font_sizes/font_size = 22
-placeholder_text = "Room code"
+placeholder_text = "e.g. apple-mango"
 alignment = 1
-max_length = 6
+max_length = 20
 
 [node name="JoinSpacer" type="Control" parent="UI/StartScreen/VBoxContainer/JoinPanel"]
 layout_mode = 2
@@ -272,7 +280,7 @@ autowrap_mode = 3
 layout_mode = 2
 custom_minimum_size = Vector2(120, 36)
 theme_override_font_sizes/font_size = 16
-text = "← BACK"
+text = "< BACK"
 size_flags_horizontal = 4
 
 ; ---- Waiting panel (after CREATE ROOM) ----
@@ -497,13 +505,6 @@ theme_override_font_sizes/font_size = 24
 text = "LOCK IN [Space]"
 size_flags_horizontal = 4
 
-[node name="KeyHint" type="Label" parent="UI/AnswerPhase/PlayerContainer/P1Controls"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 14
-theme_override_colors/font_color = Color(0.4, 0.4, 0.4, 1)
-text = "Keys: A (-)  D (+)  Space (Lock)"
-horizontal_alignment = 1
-
 ; -- Divider --
 [node name="Divider" type="VSeparator" parent="UI/AnswerPhase/PlayerContainer"]
 layout_mode = 2
@@ -553,13 +554,6 @@ custom_minimum_size = Vector2(200, 60)
 theme_override_font_sizes/font_size = 24
 text = "LOCK IN [Enter]"
 size_flags_horizontal = 4
-
-[node name="KeyHint" type="Label" parent="UI/AnswerPhase/PlayerContainer/P2Controls"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 14
-theme_override_colors/font_color = Color(0.4, 0.4, 0.4, 1)
-text = "Keys: Left (-)  Right (+)  Enter (Lock)"
-horizontal_alignment = 1
 
 ; ---- RESULT OVERLAY ----
 [node name="ResultOverlay" type="Control" parent="UI"]
